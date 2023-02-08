@@ -15,9 +15,11 @@ import java.util.stream.Collectors;
 @Repository
 public class ProductRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final String scriptFileName;
 
     public ProductRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        scriptFileName = read("product_name.sql");
     }
 
     private static String read(String scriptFileName) {
@@ -29,7 +31,6 @@ public class ProductRepository {
     }
 
     public List<String> getProductName(String name) {
-        String scriptFileName = read("product_name.sql");
         return namedParameterJdbcTemplate.queryForList(scriptFileName, Map.of("name", name), String.class);
     }
 }
